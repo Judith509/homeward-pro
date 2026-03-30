@@ -1,6 +1,11 @@
 import { Bell, Search, Menu } from "lucide-react";
+import { useRole } from "@/contexts/RoleContext";
 
 export function TopNavbar({ onMenuToggle }: { onMenuToggle: () => void }) {
+  const { role, userName } = useRole();
+  const initials = userName.split(" ").map(n => n[0]).join("");
+  const roleLabel = role === "admin" ? "Admin" : role === "owner" ? "Propriétaire" : "Client";
+
   return (
     <header className="h-16 bg-card border-b border-border flex items-center justify-between px-6 sticky top-0 z-40">
       <div className="flex items-center gap-4">
@@ -11,7 +16,7 @@ export function TopNavbar({ onMenuToggle }: { onMenuToggle: () => void }) {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Rechercher..."
             className="pl-10 pr-4 py-2 bg-secondary rounded-lg text-sm border-0 outline-none focus:ring-2 focus:ring-primary/20 w-64 text-foreground placeholder:text-muted-foreground"
           />
         </div>
@@ -23,11 +28,11 @@ export function TopNavbar({ onMenuToggle }: { onMenuToggle: () => void }) {
         </button>
         <div className="flex items-center gap-3 pl-3 border-l border-border">
           <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold">
-            JD
+            {initials}
           </div>
           <div className="hidden md:block">
-            <p className="text-sm font-medium text-foreground">Jean Dupont</p>
-            <p className="text-xs text-muted-foreground">Admin</p>
+            <p className="text-sm font-medium text-foreground">{userName}</p>
+            <p className="text-xs text-muted-foreground">{roleLabel}</p>
           </div>
         </div>
       </div>
