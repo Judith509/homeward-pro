@@ -66,6 +66,19 @@ export interface User {
   status: "active" | "inactive";
 }
 
+export interface Owner {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  registrationDate: string;
+  status: "active" | "blocked" | "deleted";
+  blockReason?: string;
+  blockUntil?: string;
+  propertyIds: string[];
+}
+
 export interface Review {
   id: string;
   propertyId: string;
