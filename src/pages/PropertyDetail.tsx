@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ArrowLeft, MapPin, Users, Bed, Bath, Maximize2, Star, Check, CalendarDays } from "lucide-react";
+import { ArrowLeft, MapPin, Users, Bed, Bath, Maximize2, Star, Check, CalendarDays, MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { Property } from "@/data/sampleData";
 import { reviews } from "@/data/sampleData";
 
