@@ -10,6 +10,7 @@ interface Props {
 }
 
 export default function PropertyDetail({ property, onBack }: Props) {
+  const navigate = useNavigate();
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(1);
