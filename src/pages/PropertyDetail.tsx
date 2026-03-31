@@ -160,6 +160,12 @@ export default function PropertyDetail({ property, onBack }: Props) {
                 >
                   <CalendarDays className="w-4 h-4" /> Réserver
                 </button>
+                <button
+                  onClick={() => navigate(`/client-messages?property=${property.id}`)}
+                  className="w-full py-3 bg-secondary text-foreground rounded-lg text-sm font-medium hover:bg-muted transition-colors border border-border flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" /> Contacter le propriétaire
+                </button>
               </div>
             )}
           </div>

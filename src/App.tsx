@@ -49,6 +49,7 @@ const App = () => (
             <Route path="/history" element={<LayoutPage><BookingHistory /></LayoutPage>} />
             <Route path="/my-reviews" element={<LayoutPage><MyReviews /></LayoutPage>} />
             <Route path="/reviews" element={<LayoutPage><OwnerReviews /></LayoutPage>} />
+            <Route path="/client-messages" element={<LayoutPage><ClientMessages /></LayoutPage>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
