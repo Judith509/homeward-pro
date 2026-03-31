@@ -187,6 +187,14 @@ export const users: User[] = [
   { id: "u4", name: "Anne Martin", email: "anne@renteasy.com", role: "manager", avatar: "AM", status: "inactive" },
 ];
 
+export const owners: Owner[] = [
+  { id: "OWN-001", firstName: "Pierre", lastName: "Durand", email: "pierre.durand@email.com", phone: "+33 6 12 34 56 78", registrationDate: "2025-06-15", status: "active", propertyIds: ["p1", "p2", "p3"] },
+  { id: "OWN-002", firstName: "Isabelle", lastName: "Moreau", email: "isabelle.moreau@email.com", phone: "+33 6 98 76 54 32", registrationDate: "2025-09-22", status: "active", propertyIds: ["p1"] },
+  { id: "OWN-003", firstName: "François", lastName: "Bernard", email: "francois.bernard@email.com", phone: "+33 7 11 22 33 44", registrationDate: "2025-11-03", status: "blocked", blockReason: "Annonces frauduleuses signalées", blockUntil: "2026-04-15", propertyIds: ["p2", "p3"] },
+  { id: "OWN-004", firstName: "Catherine", lastName: "Lefevre", email: "catherine.lefevre@email.com", phone: "+33 6 55 44 33 22", registrationDate: "2026-01-10", status: "active", propertyIds: [] },
+  { id: "OWN-005", firstName: "Alain", lastName: "Girard", email: "alain.girard@email.com", phone: "+33 7 66 77 88 99", registrationDate: "2025-08-01", status: "deleted", propertyIds: ["p1", "p2"] },
+];
+
 export const reviews: Review[] = [
   { id: "rev1", propertyId: "p1", propertyName: "Appartement Haussmannien", clientId: "client1", clientName: "Sophie Martin", rating: 5, comment: "Superbe appartement, très bien situé. La vue est magnifique ! Tout était propre et conforme à l'annonce.", date: "2026-03-20" },
   { id: "rev2", propertyId: "p2", propertyName: "Villa Méditerranée", clientId: "client3", clientName: "Tom Anderson", rating: 4, comment: "Très belle villa, piscine agréable. Un peu loin du centre-ville mais le cadre est exceptionnel.", date: "2026-03-15" },
