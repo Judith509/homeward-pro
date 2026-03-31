@@ -12,13 +12,8 @@ interface NavItem {
 }
 
 const adminNav: NavItem[] = [
-  { title: "Dashboard", url: "/", icon: Home },
-  { title: "Logements", url: "/properties", icon: Building2 },
-  { title: "Réservations", url: "/reservations", icon: CalendarDays },
-  { title: "Calendrier", url: "/calendar", icon: Calendar },
-  { title: "Ménage", url: "/cleaning", icon: Sparkles },
-  { title: "Messages", url: "/messages", icon: MessageSquare },
-  { title: "Utilisateurs", url: "/users", icon: Users },
+  { title: "Tableau de bord", url: "/", icon: Home },
+  { title: "Propriétaires", url: "/users", icon: Users },
   { title: "Paramètres", url: "/settings", icon: Settings },
 ];
 

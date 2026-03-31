@@ -66,6 +66,19 @@ export interface User {
   status: "active" | "inactive";
 }
 
+export interface Owner {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  registrationDate: string;
+  status: "active" | "blocked" | "deleted";
+  blockReason?: string;
+  blockUntil?: string;
+  propertyIds: string[];
+}
+
 export interface Review {
   id: string;
   propertyId: string;
@@ -172,6 +185,14 @@ export const users: User[] = [
   { id: "u2", name: "Claire Petit", email: "claire@renteasy.com", role: "cleaner", avatar: "CP", status: "active" },
   { id: "u3", name: "Marc Leroy", email: "marc@renteasy.com", role: "cleaner", avatar: "ML", status: "active" },
   { id: "u4", name: "Anne Martin", email: "anne@renteasy.com", role: "manager", avatar: "AM", status: "inactive" },
+];
+
+export const owners: Owner[] = [
+  { id: "OWN-001", firstName: "Pierre", lastName: "Durand", email: "pierre.durand@email.com", phone: "+33 6 12 34 56 78", registrationDate: "2025-06-15", status: "active", propertyIds: ["p1", "p2", "p3"] },
+  { id: "OWN-002", firstName: "Isabelle", lastName: "Moreau", email: "isabelle.moreau@email.com", phone: "+33 6 98 76 54 32", registrationDate: "2025-09-22", status: "active", propertyIds: ["p1"] },
+  { id: "OWN-003", firstName: "François", lastName: "Bernard", email: "francois.bernard@email.com", phone: "+33 7 11 22 33 44", registrationDate: "2025-11-03", status: "blocked", blockReason: "Annonces frauduleuses signalées", blockUntil: "2026-04-15", propertyIds: ["p2", "p3"] },
+  { id: "OWN-004", firstName: "Catherine", lastName: "Lefevre", email: "catherine.lefevre@email.com", phone: "+33 6 55 44 33 22", registrationDate: "2026-01-10", status: "active", propertyIds: [] },
+  { id: "OWN-005", firstName: "Alain", lastName: "Girard", email: "alain.girard@email.com", phone: "+33 7 66 77 88 99", registrationDate: "2025-08-01", status: "deleted", propertyIds: ["p1", "p2"] },
 ];
 
 export const reviews: Review[] = [
