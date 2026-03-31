@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ArrowLeft, MapPin, Users, Bed, Bath, Maximize2, Star, Check, CalendarDays } from "lucide-react";
+import { ArrowLeft, MapPin, Users, Bed, Bath, Maximize2, Star, Check, CalendarDays, MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { Property } from "@/data/sampleData";
 import { reviews } from "@/data/sampleData";
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function PropertyDetail({ property, onBack }: Props) {
+  const navigate = useNavigate();
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(1);
@@ -157,6 +159,12 @@ export default function PropertyDetail({ property, onBack }: Props) {
                   className="w-full py-3 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   <CalendarDays className="w-4 h-4" /> Réserver
+                </button>
+                <button
+                  onClick={() => navigate(`/client-messages?property=${property.id}`)}
+                  className="w-full py-3 bg-secondary text-foreground rounded-lg text-sm font-medium hover:bg-muted transition-colors border border-border flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" /> Contacter le propriétaire
                 </button>
               </div>
             )}

@@ -33,7 +33,6 @@ const clientNav: NavItem[] = [
   { title: "Mes réservations", url: "/my-bookings", icon: CalendarDays },
   { title: "Historique", url: "/history", icon: History },
   { title: "Mes avis", url: "/my-reviews", icon: Star },
-  { title: "Messages", url: "/messages", icon: MessageSquare },
   { title: "Paramètres", url: "/settings", icon: Settings },
 ];
 
