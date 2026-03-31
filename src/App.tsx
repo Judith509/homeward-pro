@@ -20,6 +20,7 @@ import MyBookings from "./pages/MyBookings";
 import BookingHistory from "./pages/BookingHistory";
 import MyReviews from "./pages/MyReviews";
 import OwnerReviews from "./pages/OwnerReviews";
+import ClientMessages from "./pages/ClientMessages";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
