@@ -3,9 +3,14 @@ import { useRole } from "@/contexts/RoleContext";
 import Dashboard from "./Dashboard";
 import OwnerDashboard from "./OwnerDashboard";
 import BrowseProperties from "./BrowseProperties";
+import LandingPage from "./LandingPage";
 
 export default function Index() {
-  const { role } = useRole();
+  const { role, isLoggedIn } = useRole();
+
+  if (!isLoggedIn) {
+    return <LandingPage />;
+  }
 
   return (
     <AppLayout>
