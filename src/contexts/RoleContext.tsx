@@ -5,6 +5,9 @@ interface RoleContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
   userName: string;
+  isLoggedIn: boolean;
+  login: (role: UserRole) => void;
+  logout: () => void;
 }
 
 const roleNames: Record<UserRole, string> = {
