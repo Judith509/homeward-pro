@@ -19,7 +19,7 @@ export default function Login() {
 
   const handleLogin = () => {
     login(selectedRole);
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (
