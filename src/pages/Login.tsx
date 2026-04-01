@@ -14,11 +14,11 @@ const roles: { value: UserRole; label: string; desc: string; icon: typeof Shield
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState<UserRole>("admin");
-  const { setRole } = useRole();
+  const { login } = useRole();
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    setRole(selectedRole);
+    login(selectedRole);
     navigate("/");
   };
 
