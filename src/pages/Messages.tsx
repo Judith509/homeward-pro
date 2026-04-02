@@ -2,12 +2,6 @@ import { useState } from "react";
 import { Send, Home, Search } from "lucide-react";
 import { reservations, properties } from "@/data/sampleData";
 
-const typeIcons: Record<string, typeof Mail> = {
-  "check-in": LogIn,
-  welcome: MessageCircle,
-  checkout: LogOutIcon,
-  custom: Mail,
-};
 
 // Build conversations grouped by property for the owner
 const confirmedReservations = reservations.filter((r) => r.status === "confirmed" || r.status === "completed");
