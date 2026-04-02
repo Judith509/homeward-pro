@@ -21,11 +21,9 @@ const conversations = confirmedReservations.map((r) => {
 });
 
 export default function Messages() {
-  const [selectedTemplate, setSelectedTemplate] = useState(messageTemplates[0]);
   const [selectedConversation, setSelectedConversation] = useState(conversations[0]?.id || "");
   const [messageText, setMessageText] = useState("");
   const [searchGuest, setSearchGuest] = useState("");
-  const [activeTab, setActiveTab] = useState<"conversations" | "templates">("conversations");
 
   const filteredConversations = conversations.filter(
     (c) =>
