@@ -1,13 +1,7 @@
 import { useState } from "react";
-import { Send, Copy, Mail, LogIn, LogOut as LogOutIcon, MessageCircle, Home, Search } from "lucide-react";
-import { messageTemplates, reservations, properties } from "@/data/sampleData";
+import { Send, Home, Search } from "lucide-react";
+import { reservations, properties } from "@/data/sampleData";
 
-const typeIcons: Record<string, typeof Mail> = {
-  "check-in": LogIn,
-  welcome: MessageCircle,
-  checkout: LogOutIcon,
-  custom: Mail,
-};
 
 // Build conversations grouped by property for the owner
 const confirmedReservations = reservations.filter((r) => r.status === "confirmed" || r.status === "completed");
@@ -21,11 +15,9 @@ const conversations = confirmedReservations.map((r) => {
 });
 
 export default function Messages() {
-  const [selectedTemplate, setSelectedTemplate] = useState(messageTemplates[0]);
   const [selectedConversation, setSelectedConversation] = useState(conversations[0]?.id || "");
   const [messageText, setMessageText] = useState("");
   const [searchGuest, setSearchGuest] = useState("");
-  const [activeTab, setActiveTab] = useState<"conversations" | "templates">("conversations");
 
   const filteredConversations = conversations.filter(
     (c) =>
@@ -42,28 +34,7 @@ export default function Messages() {
         <p className="text-muted-foreground text-sm mt-1">Communication avec les clients</p>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 bg-muted p-1 rounded-lg w-fit">
-        <button
-          onClick={() => setActiveTab("conversations")}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeTab === "conversations" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Conversations
-        </button>
-        <button
-          onClick={() => setActiveTab("templates")}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeTab === "templates" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Modèles de messages
-        </button>
-      </div>
-
-      {activeTab === "conversations" && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Conversation List */}
           <div className="glass-card p-4 space-y-3">
             <div className="relative">
@@ -133,18 +104,6 @@ export default function Messages() {
                   <p className="text-sm text-muted-foreground">Les messages apparaîtront ici.</p>
                 </div>
 
-                {/* Quick templates */}
-                <div className="px-6 py-2 border-t border-border flex gap-2 overflow-x-auto">
-                  {messageTemplates.map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => setMessageText(t.body)}
-                      className="whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors border border-border"
-                    >
-                      {t.title}
-                    </button>
-                  ))}
-                </div>
 
                 {/* Input */}
                 <div className="px-6 py-4 border-t border-border flex gap-2">
@@ -167,54 +126,6 @@ export default function Messages() {
             )}
           </div>
         </div>
-      )}
-
-      {activeTab === "templates" && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="glass-card p-4 space-y-2">
-            <h2 className="font-semibold text-foreground mb-3">Modèles</h2>
-            {messageTemplates.map((m) => {
-              const Icon = typeIcons[m.type] || Mail;
-              return (
-                <button
-                  key={m.id}
-                  onClick={() => setSelectedTemplate(m)}
-                  className={`w-full text-left p-3 rounded-lg flex items-center gap-3 transition-colors ${
-                    selectedTemplate.id === m.id ? "bg-primary/10 border border-primary/30" : "hover:bg-muted border border-transparent"
-                  }`}
-                >
-                  <Icon className={`w-5 h-5 flex-shrink-0 ${selectedTemplate.id === m.id ? "text-primary" : "text-muted-foreground"}`} />
-                  <div>
-                    <p className={`text-sm font-medium ${selectedTemplate.id === m.id ? "text-primary" : "text-foreground"}`}>{m.title}</p>
-                    <p className="text-xs text-muted-foreground capitalize">{m.type.replace("-", " ")}</p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="lg:col-span-2 glass-card p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">{selectedTemplate.title}</h2>
-            <div>
-              <label className="text-sm font-medium text-foreground block mb-1.5">Contenu du modèle</label>
-              <textarea
-                rows={6}
-                defaultValue={selectedTemplate.body}
-                key={selectedTemplate.id}
-                className="w-full px-4 py-3 bg-secondary rounded-lg text-sm border border-border outline-none focus:ring-2 focus:ring-primary/20 resize-none text-foreground placeholder:text-muted-foreground"
-              />
-            </div>
-            <div className="flex gap-3">
-              <button className="flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
-                Sauvegarder
-              </button>
-              <button className="flex items-center gap-2 px-4 py-2.5 bg-secondary text-foreground rounded-lg text-sm font-medium hover:bg-muted transition-colors border border-border">
-                <Copy className="w-4 h-4" /> Copier
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
