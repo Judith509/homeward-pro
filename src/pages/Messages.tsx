@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Send, Copy, Mail, LogIn, LogOut as LogOutIcon, MessageCircle, Home, Search } from "lucide-react";
-import { messageTemplates, reservations, properties } from "@/data/sampleData";
+import { Send, Home, Search } from "lucide-react";
+import { reservations, properties } from "@/data/sampleData";
 
 const typeIcons: Record<string, typeof Mail> = {
   "check-in": LogIn,
