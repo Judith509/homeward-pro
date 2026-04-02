@@ -34,28 +34,7 @@ export default function Messages() {
         <p className="text-muted-foreground text-sm mt-1">Communication avec les clients</p>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 bg-muted p-1 rounded-lg w-fit">
-        <button
-          onClick={() => setActiveTab("conversations")}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeTab === "conversations" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Conversations
-        </button>
-        <button
-          onClick={() => setActiveTab("templates")}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            activeTab === "templates" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          Modèles de messages
-        </button>
-      </div>
-
-      {activeTab === "conversations" && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Conversation List */}
           <div className="glass-card p-4 space-y-3">
             <div className="relative">
