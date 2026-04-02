@@ -104,18 +104,6 @@ export default function Messages() {
                   <p className="text-sm text-muted-foreground">Les messages apparaîtront ici.</p>
                 </div>
 
-                {/* Quick templates */}
-                <div className="px-6 py-2 border-t border-border flex gap-2 overflow-x-auto">
-                  {messageTemplates.map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => setMessageText(t.body)}
-                      className="whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors border border-border"
-                    >
-                      {t.title}
-                    </button>
-                  ))}
-                </div>
 
                 {/* Input */}
                 <div className="px-6 py-4 border-t border-border flex gap-2">
