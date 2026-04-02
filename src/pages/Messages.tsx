@@ -136,9 +136,9 @@ export default function Messages() {
                 <p className="text-muted-foreground text-sm">Sélectionnez une conversation</p>
               </div>
             )}
-          </div>
         </div>
       </div>
     </div>
+  );
   );
 }
