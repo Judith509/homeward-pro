@@ -3,7 +3,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { useRole } from "@/contexts/RoleContext";
 import Dashboard from "./Dashboard";
 import OwnerDashboard from "./OwnerDashboard";
-import BrowseProperties from "./BrowseProperties";
+import ClientDashboard from "./ClientDashboard";
 
 export default function Index() {
   const { role, isLoggedIn } = useRole();
@@ -16,7 +16,7 @@ export default function Index() {
     <AppLayout>
       {role === "admin" && <Dashboard />}
       {role === "owner" && <OwnerDashboard />}
-      {role === "client" && <BrowseProperties />}
+      {role === "client" && <ClientDashboard />}
     </AppLayout>
   );
 }
