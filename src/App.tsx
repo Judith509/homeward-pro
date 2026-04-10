@@ -22,6 +22,7 @@ import BookingHistory from "./pages/BookingHistory";
 import MyReviews from "./pages/MyReviews";
 import OwnerReviews from "./pages/OwnerReviews";
 import ClientMessages from "./pages/ClientMessages";
+import BrowseProperties from "./pages/BrowseProperties";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/my-reviews" element={<LayoutPage><MyReviews /></LayoutPage>} />
             <Route path="/reviews" element={<LayoutPage><OwnerReviews /></LayoutPage>} />
             <Route path="/client-messages" element={<LayoutPage><ClientMessages /></LayoutPage>} />
+            <Route path="/browse" element={<LayoutPage><BrowseProperties /></LayoutPage>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

@@ -29,7 +29,8 @@ const ownerNav: NavItem[] = [
 ];
 
 const clientNav: NavItem[] = [
-  { title: "Explorer", url: "/", icon: Search },
+  { title: "Mon Espace", url: "/dashboard", icon: Home },
+  { title: "Explorer", url: "/browse", icon: Search },
   { title: "Mes réservations", url: "/my-bookings", icon: CalendarDays },
   { title: "Historique", url: "/history", icon: History },
   { title: "Mes avis", url: "/my-reviews", icon: Star },
