@@ -1,6 +1,18 @@
 import { useState } from "react";
-import { CalendarDays, Users as UsersIcon, MessageCircle, Send, ChevronDown, ChevronUp } from "lucide-react";
-import { reservations, properties, owners } from "@/data/sampleData";
+import { CalendarDays, Users as UsersIcon, MessageCircle, Send, ChevronDown, ChevronUp, XCircle } from "lucide-react";
+import { reservations as initialReservations, properties, owners, type Reservation } from "@/data/sampleData";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 const statusColors: Record<string, string> = {
   confirmed: "bg-success/10 text-success",
