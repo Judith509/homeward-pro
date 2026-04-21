@@ -91,11 +91,11 @@ export default function MyBookings() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">Mes réservations</h1>
-        <p className="text-muted-foreground text-sm mt-1">{myBookings.length} réservation(s)</p>
+        <p className="text-muted-foreground text-sm mt-1">{bookings.length} réservation(s)</p>
       </div>
 
       <div className="space-y-3">
-        {myBookings.map((r) => {
+        {bookings.map((r) => {
           const isConfirmed = r.status === "confirmed";
           const isChatOpen = openChat === r.id;
           const messages = chatMessages[r.id] || [];
