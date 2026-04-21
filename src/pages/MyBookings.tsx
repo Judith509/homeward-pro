@@ -51,6 +51,9 @@ const mockMessages: Record<string, ChatMessage[]> = {
 const myBookings = reservations.filter((r) => r.guestId === "client1");
 
 export default function MyBookings() {
+  const [bookings, setBookings] = useState<Reservation[]>(
+    initialReservations.filter((r) => r.guestId === "client1")
+  );
   const [openChat, setOpenChat] = useState<string | null>(null);
   const [chatMessages, setChatMessages] = useState<Record<string, ChatMessage[]>>(mockMessages);
   const [inputText, setInputText] = useState("");
@@ -58,6 +61,13 @@ export default function MyBookings() {
   const toggleChat = (id: string) => {
     setOpenChat((prev) => (prev === id ? null : id));
     setInputText("");
+  };
+
+  const handleCancel = (reservationId: string) => {
+    setBookings((prev) =>
+      prev.map((b) => (b.id === reservationId ? { ...b, status: "cancelled" } : b))
+    );
+    toast.success("Réservation annulée");
   };
 
   const handleSend = (reservationId: string) => {
