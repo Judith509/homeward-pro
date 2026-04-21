@@ -48,7 +48,7 @@ const mockMessages: Record<string, ChatMessage[]> = {
   ],
 };
 
-const myBookings = reservations.filter((r) => r.guestId === "client1");
+
 
 export default function MyBookings() {
   const [bookings, setBookings] = useState<Reservation[]>(
