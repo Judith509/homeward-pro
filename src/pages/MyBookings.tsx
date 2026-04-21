@@ -97,6 +97,7 @@ export default function MyBookings() {
       <div className="space-y-3">
         {bookings.map((r) => {
           const isConfirmed = r.status === "confirmed";
+          const canCancel = r.status === "confirmed" || r.status === "pending";
           const isChatOpen = openChat === r.id;
           const messages = chatMessages[r.id] || [];
           const ownerName = getOwnerName(r.propertyId);
@@ -125,6 +126,37 @@ export default function MyBookings() {
                     <span className="hidden sm:inline">Message</span>
                     {isChatOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                   </button>
+                )}
+                {canCancel && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <button
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
+                      >
+                        <XCircle className="w-4 h-4" />
+                        <span className="hidden sm:inline">Annuler</span>
+                      </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Annuler la réservation ?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Êtes-vous sûr de vouloir annuler votre réservation pour{" "}
+                          <span className="font-semibold">{r.propertyName}</span> du {r.checkIn} au {r.checkOut} ?
+                          Cette action est irréversible.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Retour</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleCancel(r.id)}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Confirmer l'annulation
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 )}
               </div>
 
