@@ -196,7 +196,7 @@ export default function Properties() {
           <p className="text-muted-foreground text-sm mt-1">{items.length} logements gérés</p>
         </div>
         <button
-          onClick={() => setOpen(true)}
+          onClick={openCreate}
           className="flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
         >
           <Plus className="w-4 h-4" /> Ajouter un logement
@@ -237,19 +237,27 @@ export default function Properties() {
                 </div>
                 <div className="text-lg font-bold text-primary">€{p.price}<span className="text-sm font-normal text-muted-foreground">/nuit</span></div>
               </div>
-              <button className="flex items-center gap-2 mt-4 text-sm text-primary font-medium hover:opacity-80 transition-opacity">
-                <Eye className="w-4 h-4" /> Voir détails
-              </button>
+              <div className="flex items-center justify-between mt-4">
+                <button className="flex items-center gap-2 text-sm text-primary font-medium hover:opacity-80 transition-opacity">
+                  <Eye className="w-4 h-4" /> Voir détails
+                </button>
+                <button
+                  onClick={() => openEdit(p)}
+                  className="flex items-center gap-2 text-sm text-foreground font-medium px-3 py-1.5 rounded-md border border-border hover:bg-accent transition-colors"
+                >
+                  <Pencil className="w-4 h-4" /> Modifier
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Ajouter un logement</DialogTitle>
-            <DialogDescription>Renseignez les informations de votre nouveau logement.</DialogDescription>
+            <DialogTitle>{editingId ? "Modifier le logement" : "Ajouter un logement"}</DialogTitle>
+            <DialogDescription>{editingId ? "Mettez à jour les informations de votre logement." : "Renseignez les informations de votre nouveau logement."}</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
