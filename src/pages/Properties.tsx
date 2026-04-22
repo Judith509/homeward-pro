@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { MapPin, Users, Plus, Eye, ToggleLeft, ToggleRight, Bed, Bath, Maximize2 } from "lucide-react";
+import { useState, useRef } from "react";
+import { MapPin, Users, Plus, Eye, ToggleLeft, ToggleRight, Bed, Bath, Maximize2, Upload, X, Link as LinkIcon } from "lucide-react";
 import { properties as initialProperties, allAmenities, type Property } from "@/data/sampleData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -36,12 +36,18 @@ const emptyForm = {
   type: "apartment" as Property["type"],
   description: "",
   amenities: [] as string[],
+  photos: [] as string[],
 };
+
+const MAX_PHOTOS = 8;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export default function Properties() {
   const [items, setItems] = useState<Property[]>(initialProperties);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
+  const [imageUrl, setImageUrl] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +55,7 @@ export default function Properties() {
       toast.error("Merci de remplir les champs obligatoires");
       return;
     }
+    const photos = form.photos.length > 0 ? form.photos : [propertyParis];
     const newProperty: Property = {
       id: `p${Date.now()}`,
       name: form.name.trim(),
@@ -62,8 +69,8 @@ export default function Properties() {
       surface: Number(form.surface) || 0,
       type: form.type,
       status: "active",
-      image: propertyParis,
-      photos: [propertyParis],
+      image: photos[0],
+      photos,
       description: form.description.trim(),
       amenities: form.amenities,
       cleaningIncluded: true,
@@ -71,6 +78,7 @@ export default function Properties() {
     };
     setItems((prev) => [newProperty, ...prev]);
     setForm(emptyForm);
+    setImageUrl("");
     setOpen(false);
     toast.success("Logement ajouté avec succès");
   };
@@ -80,6 +88,59 @@ export default function Properties() {
       ...f,
       amenities: f.amenities.includes(a) ? f.amenities.filter((x) => x !== a) : [...f.amenities, a],
     }));
+  };
+
+  const handleFiles = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const remaining = MAX_PHOTOS - form.photos.length;
+    if (remaining <= 0) {
+      toast.error(`Maximum ${MAX_PHOTOS} photos`);
+      return;
+    }
+    const selected = Array.from(files).slice(0, remaining);
+    const readers = selected.map((file) => {
+      return new Promise<string | null>((resolve) => {
+        if (!file.type.startsWith("image/")) {
+          toast.error(`${file.name} n'est pas une image`);
+          return resolve(null);
+        }
+        if (file.size > MAX_FILE_SIZE) {
+          toast.error(`${file.name} dépasse 5 Mo`);
+          return resolve(null);
+        }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(file);
+      });
+    });
+    Promise.all(readers).then((results) => {
+      const valid = results.filter((r): r is string => !!r);
+      if (valid.length > 0) {
+        setForm((f) => ({ ...f, photos: [...f.photos, ...valid] }));
+      }
+    });
+  };
+
+  const addImageUrl = () => {
+    const url = imageUrl.trim();
+    if (!url) return;
+    try {
+      new URL(url);
+    } catch {
+      toast.error("URL invalide");
+      return;
+    }
+    if (form.photos.length >= MAX_PHOTOS) {
+      toast.error(`Maximum ${MAX_PHOTOS} photos`);
+      return;
+    }
+    setForm((f) => ({ ...f, photos: [...f.photos, url] }));
+    setImageUrl("");
+  };
+
+  const removePhoto = (index: number) => {
+    setForm((f) => ({ ...f, photos: f.photos.filter((_, i) => i !== index) }));
   };
 
   return (
@@ -200,6 +261,76 @@ export default function Properties() {
               <Label htmlFor="description">Description</Label>
               <Textarea id="description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} maxLength={500} />
             </div>
+            <div className="space-y-2">
+              <Label>Photos ({form.photos.length}/{MAX_PHOTOS})</Label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex-1"
+                  disabled={form.photos.length >= MAX_PHOTOS}
+                >
+                  <Upload className="w-4 h-4 mr-2" /> Importer des images
+                </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => {
+                    handleFiles(e.target.files);
+                    e.target.value = "";
+                  }}
+                />
+              </div>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="url"
+                    placeholder="https://exemple.com/image.jpg"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        addImageUrl();
+                      }
+                    }}
+                    className="pl-9"
+                  />
+                </div>
+                <Button type="button" variant="secondary" onClick={addImageUrl} disabled={form.photos.length >= MAX_PHOTOS}>
+                  Ajouter
+                </Button>
+              </div>
+              {form.photos.length > 0 && (
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mt-2">
+                  {form.photos.map((src, i) => (
+                    <div key={i} className="relative aspect-square rounded-md overflow-hidden border border-border group">
+                      <img src={src} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" />
+                      {i === 0 && (
+                        <span className="absolute bottom-1 left-1 px-1.5 py-0.5 bg-primary text-primary-foreground text-[10px] rounded">
+                          Principale
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(i)}
+                        className="absolute top-1 right-1 p-1 bg-destructive text-destructive-foreground rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        aria-label="Supprimer"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground">La première photo est utilisée comme image principale. Max 5 Mo par fichier.</p>
+            </div>
+
             <div className="space-y-2">
               <Label>Équipements</Label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-48 overflow-y-auto p-2 border border-border rounded-md">
