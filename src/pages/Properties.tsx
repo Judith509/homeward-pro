@@ -396,8 +396,8 @@ export default function Properties() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
-              <Button type="submit">Ajouter le logement</Button>
+              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>Annuler</Button>
+              <Button type="submit">{editingId ? "Enregistrer les modifications" : "Ajouter le logement"}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
