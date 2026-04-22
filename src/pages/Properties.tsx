@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { MapPin, Users, Plus, Eye, ToggleLeft, ToggleRight, Bed, Bath, Maximize2, Upload, X, Link as LinkIcon } from "lucide-react";
+import { MapPin, Users, Plus, Eye, ToggleLeft, ToggleRight, Bed, Bath, Maximize2, Upload, X, Link as LinkIcon, Pencil } from "lucide-react";
 import { properties as initialProperties, allAmenities, type Property } from "@/data/sampleData";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -45,9 +45,47 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 export default function Properties() {
   const [items, setItems] = useState<Property[]>(initialProperties);
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [imageUrl, setImageUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const resetForm = () => {
+    setForm(emptyForm);
+    setImageUrl("");
+    setEditingId(null);
+  };
+
+  const openCreate = () => {
+    resetForm();
+    setOpen(true);
+  };
+
+  const openEdit = (p: Property) => {
+    setEditingId(p.id);
+    setForm({
+      name: p.name,
+      address: p.address || "",
+      city: p.city,
+      country: p.country,
+      price: String(p.price),
+      capacity: String(p.capacity),
+      bedrooms: String(p.bedrooms),
+      bathrooms: String(p.bathrooms),
+      surface: String(p.surface),
+      type: p.type,
+      description: p.description || "",
+      amenities: [...p.amenities],
+      photos: [...(p.photos || [p.image])],
+    });
+    setImageUrl("");
+    setOpen(true);
+  };
+
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (!next) resetForm();
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,8 +94,7 @@ export default function Properties() {
       return;
     }
     const photos = form.photos.length > 0 ? form.photos : [propertyParis];
-    const newProperty: Property = {
-      id: `p${Date.now()}`,
+    const base = {
       name: form.name.trim(),
       address: form.address.trim(),
       city: form.city.trim(),
@@ -68,19 +105,27 @@ export default function Properties() {
       bathrooms: Number(form.bathrooms) || 1,
       surface: Number(form.surface) || 0,
       type: form.type,
-      status: "active",
       image: photos[0],
       photos,
       description: form.description.trim(),
       amenities: form.amenities,
-      cleaningIncluded: true,
-      ownerId: "owner1",
     };
-    setItems((prev) => [newProperty, ...prev]);
-    setForm(emptyForm);
-    setImageUrl("");
-    setOpen(false);
-    toast.success("Logement ajouté avec succès");
+
+    if (editingId) {
+      setItems((prev) => prev.map((p) => (p.id === editingId ? { ...p, ...base } : p)));
+      toast.success("Logement mis à jour");
+    } else {
+      const newProperty: Property = {
+        id: `p${Date.now()}`,
+        ...base,
+        status: "active",
+        cleaningIncluded: true,
+        ownerId: "owner1",
+      };
+      setItems((prev) => [newProperty, ...prev]);
+      toast.success("Logement ajouté avec succès");
+    }
+    handleOpenChange(false);
   };
 
   const toggleAmenity = (a: string) => {
@@ -151,7 +196,7 @@ export default function Properties() {
           <p className="text-muted-foreground text-sm mt-1">{items.length} logements gérés</p>
         </div>
         <button
-          onClick={() => setOpen(true)}
+          onClick={openCreate}
           className="flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
         >
           <Plus className="w-4 h-4" /> Ajouter un logement
@@ -192,19 +237,27 @@ export default function Properties() {
                 </div>
                 <div className="text-lg font-bold text-primary">€{p.price}<span className="text-sm font-normal text-muted-foreground">/nuit</span></div>
               </div>
-              <button className="flex items-center gap-2 mt-4 text-sm text-primary font-medium hover:opacity-80 transition-opacity">
-                <Eye className="w-4 h-4" /> Voir détails
-              </button>
+              <div className="flex items-center justify-between mt-4">
+                <button className="flex items-center gap-2 text-sm text-primary font-medium hover:opacity-80 transition-opacity">
+                  <Eye className="w-4 h-4" /> Voir détails
+                </button>
+                <button
+                  onClick={() => openEdit(p)}
+                  className="flex items-center gap-2 text-sm text-foreground font-medium px-3 py-1.5 rounded-md border border-border hover:bg-accent transition-colors"
+                >
+                  <Pencil className="w-4 h-4" /> Modifier
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Ajouter un logement</DialogTitle>
-            <DialogDescription>Renseignez les informations de votre nouveau logement.</DialogDescription>
+            <DialogTitle>{editingId ? "Modifier le logement" : "Ajouter un logement"}</DialogTitle>
+            <DialogDescription>{editingId ? "Mettez à jour les informations de votre logement." : "Renseignez les informations de votre nouveau logement."}</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -343,8 +396,8 @@ export default function Properties() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>Annuler</Button>
-              <Button type="submit">Ajouter le logement</Button>
+              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>Annuler</Button>
+              <Button type="submit">{editingId ? "Enregistrer les modifications" : "Ajouter le logement"}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
